@@ -1,0 +1,16 @@
+{
+  "name": "pixelcheer.mcqn.com",
+  "version": "0.0.1",
+  "description": "",
+  "main": "pixelcheer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "MCQN Ltd",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.10.4",
+    "redis": "^0.12.1",
+    "socket.io": "^1.2.1"
+  }
+}
