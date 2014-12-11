@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="json-sans-eval.js"></script>
-    <script src="css-browser-selector.js"></script>
-    <script src="gol-canvas.js"></script>
-    <script src="gol.js"></script>
+    <script src="/javascript/pixelcheer.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     
     <link rel="stylesheet" type="text/css" href="css/style.css" />
@@ -31,49 +28,11 @@
         xmlhttp.open("GET","initial_state",true);
 	xmlhttp.send();
       }
-
-      function Facade(element_id) {
-        this.element = element_id;
-        this.canvas = document.getElementById(element_id);
-	this.context = this.canvas.getContext('2d');
-        this.topLeft = 0;
-        this.topRight = 0;
-        this.width = 50;
-        this.height = 50;
-        this.colour = "rgb(0,0,0)";
-      }
-      Facade.prototype.init = function() {
-        // Start with a black screen
-	this.context.fillStyle = this.colour;
-        this.context.fillRect(this.topLeft, this.topRight, this.width, this.height);
-      }
-      Facade.prototype.update = function(image, colour) {
-        // Fill in the background colour
-console.log("image "+image);
-console.log("colour "+colour);
-        this.colour = colour;
-        this.context.fillStyle = this.colour;
-        this.context.fillRect(this.topLeft, this.topRight, this.width, this.height);
-        // And draw in the image
-        this.context.drawImage(image, 0, 0);
-      }
         
       // Variables to hold the main objects
       var currentImage;
       var currentColour;
       var facade;
-      var CheerlightColours = {
-        "red": "rgb(255, 0, 0)",
-        "green": "rgb(0, 128, 0)",
-        "blue": "rgb(0, 0, 255)",
-        "cyan": "rgb(0, 255, 255)",
-        "white": "rgb(255, 255, 255)",
-        "warmwhite": "rgb(253, 245, 230)",
-        "purple": "rgb(128, 0, 128)",
-        "magenta": "rgb(255, 0, 255)",
-        "yellow": "rgb(255, 255, 0)",
-        "orange": "rgb(255, 165, 0)"
-      };
 
 var Helpers = {
   
@@ -91,9 +50,10 @@ var Helpers = {
 }
       Helpers.registerEvent(window, 'load', function () {
         // Initialise the display
-        currentColour = "rgb(0,0,0)";
+        currentColour = "black";
         currentImage = document.getElementById('bell');
-        facade = new Facade('current');
+        currentCanvas = document.getElementById('current');
+        facade = new Facade(currentCanvas);
         facade.init();
         facade.update(currentImage, currentColour);
 
@@ -109,7 +69,7 @@ var Helpers = {
           if (message["cheerlights"]) {
             // A new colour!
             console.log("Setting colour to: "+message["cheerlights"]);
-            currentColour = CheerlightColours[message["cheerlights"]];
+            currentColour = message["cheerlights"];
             facade.update(currentImage, currentColour);
           } else if (message["pixelcheer"]) {
             console.log("Setting image to: "+message["pixelcheer"]);
