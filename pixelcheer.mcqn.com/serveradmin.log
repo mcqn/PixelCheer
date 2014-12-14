@@ -1,0 +1,55 @@
+# Steps taken to bootstrap the cloud server.
+# Lines prefixed with "#" are comments/explanations
+# Lines prefixed with "cloud$" or "cloud#" are commands run on the server
+# Lines prefixed with "dev$" are commands run on the dev's machine
+
+# Create Node.js on Ubuntu Droplet
+# Set up DNS for pixelcheer.mcqn.com to point to it
+
+# Install Redis
+cloud# apt-get update
+cloud# apt-get install build-essential
+cloud# apt-get install tcl8.5
+cloud# wget http://download.redis.io/releases/redis-2.8.9.tar.gz
+cloud# tar zxvf redis-2.8.9.tar.gz
+cloud# cd redis-2.8.9
+cloud# make
+cloud# make test
+cloud# make install
+cloud# cd utils
+cloud# ./install_server.sh
+cloud# vi /etc/redis/6379.conf
+
+# Deploy the Node.js app
+cloud# npm install pm2 -g
+# Create a new group and some users for that
+cloud# addgroup www
+cloud# adduser deployer
+# pw 30yearsof
+# Add them to the group
+cloud# adduser deployer www
+cloud# mkdir /var/www
+# Set permissions
+cloud# chown -R :www /var/www
+cloud# chmod -R g+rX /var/www
+cloud# chmod g+s /var/www
+
+# Let the deployer user sudo
+cloud# adduser deployer sudo
+# Now we can stop being root :-)
+cloud# exit
+dev$ ssh deployer@sscdtech.com
+cloud$ cd /var/www
+cloud$ git clone https://github.com/mcqn/PixelCheer.git
+cloud$ cd PixelCheer/pixelcheer.mcqn.com
+cloud$ npm install
+cloud$ pm2 start pixelcheer.js
+# Set it to autostart on boot
+cloud$ pm2 startup ubuntu
+cloud$ sudo env PATH=$PATH:/usr/local/bin pm2 startup ubuntu -u deployer
+# Set up reverse proxy
+cloud$ sudo apt-get install nginx
+cloud$ sudo vi /etc/nginx/sites-available/default
+cloud$ sudo service nginx restart
+
+
