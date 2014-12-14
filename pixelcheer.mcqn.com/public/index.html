@@ -14,6 +14,9 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     <!-- Custom styles for this template -->
     <link href="/styles/cover.css" rel="stylesheet">
+    <style>
+      .cover { padding-top: 17em; padding-bottom: 3em; }
+    </style>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -26,6 +29,7 @@
     <title>MCQN Ltd | PixelCheer</title>
 
     <!-- Latest compiled and minified Bootstrap JavaScript -->
+<script src="javascript/jquery-1.11.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <script>
       function loadInitialState() {
@@ -51,6 +55,22 @@
       var currentImage;
       var currentColour;
       var facade;
+      var image_names = [
+          "bauble",
+          "bell",
+          "franken_santa",
+          "jumper",
+          "nose",
+          "peaceful_santa",
+          "prints",
+          "pudding",
+          "silly_snowman",
+          "sleepy_santa",
+          "tree",
+          "xmasfc",
+          "yaksmas"
+      ];
+      var facade_images = {};
 
 var Helpers = {
   
@@ -67,10 +87,21 @@ var Helpers = {
 
 }
       Helpers.registerEvent(window, 'load', function () {
+        // Load the images
+        for (var img in image_names) {
+            facade_images[image_names[img]] = new Image;
+            facade_images[image_names[img]].src = "images/"+image_names[img]+".png";
+        }
+        
         // Initialise the display
         currentColour = "black";
-        currentImage = document.getElementById('bell');
-        currentCanvas = document.getElementById('current');
+        //currentImage = document.getElementById('bell');
+        currentImage = facade_images['jumper'];
+        // Find the canvas to use (lets us use the responsive layout of Bootstrap)
+        ['#facade-xs', '#facade-sm', '#facade-md', '#facade-lg'].every(function(el) {
+            currentCanvas = $(el)[0];
+            return ($(el).css('display') == 'none');
+        });
         facade = new Facade(currentCanvas);
         facade.init();
         facade.update(currentImage, currentColour);
@@ -116,43 +147,104 @@ var Helpers = {
         <div class="cover-container">
           <div class="masthead clearfix">
             <div class="inner">
-              <h3 class="masthead-brand">Cover</h3>
+              <h3 class="masthead-brand">#PixelCheer</h3>
               <nav>
                 <ul class="nav masthead-nav">
-                  <li class="active"><a href="#">Home</a></li>
-                  <li><a href="#">Features</a></li>
-                  <li><a href="#">Contact</a></li>
+                  <li><a href="http://www.mcqn.com"><img src="http://www.mcqn.com/themes/chameleon/mcqnltd/logo.png" alt="MCQN Ltd" width="50%" height="50%"></a></li>
+                  <li><a href="http://www.fact.co.uk"><img src="http://www.fact.co.uk/images/fact/fact-logo-white.gif" alt="FACT (Foundation for Art and Creative Technology)" width="50%" height="50%"></a></li>
                 </ul>
               </nav>
             </div>
           </div>
 
           <div class="inner cover">
-            <h1 class="cover-heading">PixelCheer</h1>
-            <p class="lead">A festive Twitter-connected pixel gallery.</p>
+            <p class="lead">Throughout Christmas 2014 the LED facade at FACT will be showing festive pixel art.</p>
+            <p class="lead">You can control it with Twitter.</p>
             <p class="lead">
-              <a href="#" class="btn btn-lg btn-default">Learn more</a>
+              <a href="#about" class="btn btn-lg btn-default">Learn more</a>
             </p>
-      <canvas id="facade" width="300" height="300"></canvas>
-      <canvas id="current" width="50" height="50"></canvas>
-      <canvas id="target" width="50" height="50"></canvas>
-      <img src="images/tree.png" id="tree">
-      <img src="images/bauble.png" id="bauble">
-      <img src="images/bell.png" id="bell">
+          </div>
+          <div class="clearfix inner">
+      <canvas class="visible-xs-block center-block" id="facade-xs" width="300" height="300"></canvas>
+      <canvas class="visible-sm-block center-block" id="facade-sm" width="500" height="500"></canvas>
+      <canvas class="visible-md-block center-block" id="facade-md" width="600" height="600"></canvas>
+      <canvas class="visible-lg-block center-block" id="facade-lg" width="600" height="600"></canvas>
+
+            <h3>Testing... Image</h3>
+            <div class="btn-toolbar" role="group">
+              <a href="#" class="btn btn-default" onclick="currentImage = facade_images['bauble']; facade.update(currentImage, currentColour); return false;">Bauble</a>
+              <a href="#" class="btn btn-default" onclick="currentImage = facade_images['bell']; facade.update(currentImage, currentColour); return false;">Bell</a>
+              <a href="#" class="btn btn-default" onclick="currentImage = facade_images['franken_santa']; facade.update(currentImage, currentColour); return false;">FrankenSanta</a>
+              <a href="#" class="btn btn-default" onclick="currentImage = facade_images['jumper']; facade.update(currentImage, currentColour); return false;">Jumper</a>
+              <a href="#" class="btn btn-default" onclick="currentImage = facade_images['nose']; facade.update(currentImage, currentColour); return false;">Nose</a>
+              <a href="#" class="btn btn-default" onclick="currentImage = facade_images['peaceful_santa']; facade.update(currentImage, currentColour); return false;">PeacefulSanta</a>
+              <a href="#" class="btn btn-default" onclick="currentImage = facade_images['prints']; facade.update(currentImage, currentColour); return false;">Prints</a>
+              <a href="#" class="btn btn-default" onclick="currentImage = facade_images['pudding']; facade.update(currentImage, currentColour); return false;">Pudding</a>
+              <a href="#" class="btn btn-default" onclick="currentImage = facade_images['silly_snowman']; facade.update(currentImage, currentColour); return false;">SillySnowman</a>
+              <a href="#" class="btn btn-default" onclick="currentImage = facade_images['sleepy_santa']; facade.update(currentImage, currentColour); return false;">SleepySanta</a>
+              <a href="#" class="btn btn-default" onclick="currentImage = facade_images['tree']; facade.update(currentImage, currentColour); return false;">Tree</a>
+              <a href="#" class="btn btn-default" onclick="currentImage = facade_images['xmasfc']; facade.update(currentImage, currentColour); return false;">XmasFC</a>
+              <a href="#" class="btn btn-default" onclick="currentImage = facade_images['yaksmas']; facade.update(currentImage, currentColour); return false;">Yaksmas</a>
+            </div>
+            <h3>Testing... Colour</h3>
+            <div class="btn-toolbar" role="group">
+              <a href="#" class="btn btn-default" onclick="currentColour = 'red'; facade.update(currentImage, currentColour); return false;">Red</a>
+              <a href="#" class="btn btn-default" onclick="currentColour = 'green'; facade.update(currentImage, currentColour); return false;">Green</a>
+              <a href="#" class="btn btn-default" onclick="currentColour = 'blue'; facade.update(currentImage, currentColour); return false;">Blue</a>
+              <a href="#" class="btn btn-default" onclick="currentColour = 'cyan'; facade.update(currentImage, currentColour); return false;">Cyan</a>
+              <a href="#" class="btn btn-default" onclick="currentColour = 'white'; facade.update(currentImage, currentColour); return false;">White</a>
+              <a href="#" class="btn btn-default" onclick="currentColour = 'warmwhite'; facade.update(currentImage, currentColour); return false;">WarmWhite</a>
+              <a href="#" class="btn btn-default" onclick="currentColour = 'purple'; facade.update(currentImage, currentColour); return false;">Purple</a>
+              <a href="#" class="btn btn-default" onclick="currentColour = 'magenta'; facade.update(currentImage, currentColour); return false;">Magenta</a>
+              <a href="#" class="btn btn-default" onclick="currentColour = 'yellow'; facade.update(currentImage, currentColour); return false;">Yellow</a>
+              <a href="#" class="btn btn-default" onclick="currentColour = 'pink'; facade.update(currentImage, currentColour); return false;">Pink</a>
+              <a href="#" class="btn btn-default" onclick="currentColour = 'orange'; facade.update(currentImage, currentColour); return false;">Orange</a>
+            </div>
+
+            <h2><a name="about">About</a></h2>
+            <p><a href="http://www.mcqn.com">MCQN Ltd</a> and <a href="http://www.fact.co.uk">FACT</a> have collaborated with a collection of artists to bring you an interactive gallery of festive pixel art.  The project uses the huge LED facade on the side of FACT's building as the canvas to display the art and by connecting it to the Internet it allows people anywhere in the world to choose which piece is on display.</p>
+
+<p>By sending a message on Twitter that mentions the "#Cheerlights" hashtag and a colour, you can set one of the colours in the image.  If you also include the name of one of the artworks it will change the display to show that piece.</p>
+
+<h2>Directions:</h2>
+
+<ol>
+<li class="text-left">Tweet to #Cheerlights.</li>
+
+<li class="text-left">Choose from the following colours: red, green, blue, cyan, white, warmwhite, purple, magenta, yellow, pink, orange.</li>
+
+<li class="text-left">To change the picture include one of the following artwork names: bauble, bell, frankensanta, jumper, nose, peacefulsanta, prints, pudding, sillysnowman, sleepysanta, tree, xmasfc, yaksmas</li>
+</ol>
+
+
+<h2>Artists:</h2>
+
+<address>
+  <strong>Zarino Zappia</strong><br>
+  <a href="http://www.zarino.co.uk">http://www.zarino.co.uk</a><br>
+  <em>Bauble, Bell, Tree</em>
+</address>
+
+<address>
+  <strong>Anthony Casey</strong><br>
+<a href="http://escapecrate.co.uk">http://escapecrate.co.uk</a><br>
+  <em>Jumper, Nose, Prints, XmasFC</em>
+</address>
+
+<address>
+  <strong>Dan Farrimond</strong><br>
+  <a href="http://danfarrimond.co.uk">http://danfarrimond.co.uk</a><br>
+  <em>FrankenSanta, PeacefulSanta, Pudding, SillySnowman, SleepySanta, Yaksmas</em>
+</address>
 
           </div>
 
-          <div class="mastfoot">
-            <div class="inner">
+          <div class="inner">
               <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
-            </div>
           </div>
 
         </div>
-
       </div>
-
     </div>
-
   </body>
 </html>
