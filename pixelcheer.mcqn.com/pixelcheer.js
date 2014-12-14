@@ -19,24 +19,19 @@ const PORT = 8080;
 var express = require('express');
 var app = express();
 
-app.use('/media', express.static(__dirname + '/media'));
 app.use(express.static(__dirname + '/public'));
 
-app.get("/advance_times", function(req, res) {
-  redis_client.lrange(redis_key, 0, -1, function(err, result) {
-    console.log(result.length + " result:");
-    result.forEach(function (reply, i) {
-      console.log("    " + i + ": " + reply);
-    });
-    res.json({ times: result });
+app.get("/current_colour", function(req, res) {
+  redis_client.get(redis_cheerlights_key, function(err, result) {
+    res.json({ colour: result });
   });
 });
 
-  app.get("/initial_state", function(req, res) {
-    redis_client.get(redis_state_key, function(err, result) {
-      res.json({ initial_state: result });
-    });
+app.get("/current_image", function(req, res) {
+  redis_client.get(redis_image_key, function(err, result) {
+    res.json({ image: result });
   });
+});
 
 const io = require('socket.io');
 

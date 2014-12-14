@@ -11,7 +11,7 @@
     <script src="/socket.io/socket.io.js"></script>
     
     <!-- Latest compiled and minified Bootstrap CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     <!-- Custom styles for this template -->
     <link href="/styles/cover.css" rel="stylesheet">
     <style>
@@ -29,28 +29,9 @@
     <title>MCQN Ltd | PixelCheer</title>
 
     <!-- Latest compiled and minified Bootstrap JavaScript -->
-<script src="javascript/jquery-1.11.1.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script src="javascript/jquery-1.11.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <script>
-      function loadInitialState() {
-        var xmlhttp = new XMLHttpRequest();
-	xmlhttp.onreadystatechange=function()
-	{
-	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
-	  {
-            // This will return a JSON object of { "initial_state": string_of_state }
-	    initial_state = jsonParse(jsonParse(xmlhttp.response).initial_state);
-	    // Set the state for the two GoL instances
-	    mainGoL.loadState(initial_state);
-	    soFarGoL.loadState(initial_state);
-	    // Now load the initial advance times for today
-	    populateAdvanceTimes();
-          }
-        }
-        xmlhttp.open("GET","initial_state",true);
-	xmlhttp.send();
-      }
-        
       // Variables to hold the main objects
       var currentImage;
       var currentColour;
@@ -72,30 +53,17 @@
       ];
       var facade_images = {};
 
-var Helpers = {
-  
-   /**
-    * Register Event
-    */
-   registerEvent : function (element, event, handler, capture) {
-     if (/msie/i.test(navigator.userAgent)) {
-       element.attachEvent('on' + event, handler);
-     } else {
-       element.addEventListener(event, handler, capture);
-     }
-   }
-
-}
-      Helpers.registerEvent(window, 'load', function () {
+      // Set things up when the document loads
+      $(document).ready(function () {
         // Load the images
         for (var img in image_names) {
             facade_images[image_names[img]] = new Image;
             facade_images[image_names[img]].src = "images/"+image_names[img]+".png";
         }
         
-        // Initialise the display
-        currentColour = "black";
-        //currentImage = document.getElementById('bell');
+        // Initialise the display, show the red jumper until
+        // we load the correct options in a second...
+        currentColour = "red";
         currentImage = facade_images['jumper'];
         // Find the canvas to use (lets us use the responsive layout of Bootstrap)
         ['#facade-xs', '#facade-sm', '#facade-md', '#facade-lg'].every(function(el) {
@@ -106,8 +74,22 @@ var Helpers = {
         facade.init();
         facade.update(currentImage, currentColour);
 
+        // Grab the current options to show
+        $.getJSON("/current_image", function(data) {
+          if (data.image) {
+            currentImage = facade_images[data.image];
+            facade.update(currentImage, currentColour);
+          }
+        });
+        $.getJSON("/current_colour", function(data) {
+          if (data.colour) {
+            currentColour = data.colour;
+            facade.update(currentImage, currentColour);
+          }
+        });
+
 	// Get ready to detect new updates
-	var socket = io.connect('http://localhost:8080'); //, {port: 8080, rememberTransport: false/*, transports: ['xhr-polling']*/});
+	var socket = io.connect('/');
 
 	socket.on('connect', function() {
 	  console.log("connected");
@@ -122,7 +104,7 @@ var Helpers = {
             facade.update(currentImage, currentColour);
           } else if (message["pixelcheer"]) {
             console.log("Setting image to: "+message["pixelcheer"]);
-            currentImage = document.getElementById(message["pixelcheer"]);
+            currentImage = facade_images[message["pixelcheer"]];
             facade.update(currentImage, currentColour);
           } else {
             console.log("Got message we didn't expect: "+message);
