@@ -16,6 +16,7 @@
     <link href="/styles/cover.css" rel="stylesheet">
     <style>
       .cover { padding-top: 17em; padding-bottom: 3em; }
+      .clear-header { margin-top: -1.5em; padding-top: 3em; }
     </style>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -132,8 +133,9 @@
               <h3 class="masthead-brand">#PixelCheer</h3>
               <nav>
                 <ul class="nav masthead-nav">
-                  <li><a href="http://www.mcqn.com"><img src="http://www.mcqn.com/themes/chameleon/mcqnltd/logo.png" alt="MCQN Ltd" width="50%" height="50%"></a></li>
+                  <li><a href="http://www.mcqn.com"><img src="images/mcqn.png" alt="MCQN Ltd" width="100" height="30"></a></li>
                   <li><a href="http://www.fact.co.uk"><img src="http://www.fact.co.uk/images/fact/fact-logo-white.gif" alt="FACT (Foundation for Art and Creative Technology)" width="50%" height="50%"></a></li>
+                  <li><span class="h3"><a href="#artists">Artists</a></span></li>
                 </ul>
               </nav>
             </div>
@@ -146,7 +148,7 @@
               <a href="#about" class="btn btn-lg btn-default">Learn more</a>
             </p>
           </div>
-          <div class="clearfix inner">
+          <div id="facade" class="clear-header inner">
       <canvas class="visible-xs-block center-block" id="facade-xs" width="300" height="300"></canvas>
       <canvas class="visible-sm-block center-block" id="facade-sm" width="500" height="500"></canvas>
       <canvas class="visible-md-block center-block" id="facade-md" width="600" height="600"></canvas>
@@ -183,12 +185,12 @@
               <a href="#" class="btn btn-default" onclick="currentColour = 'orange'; facade.update(currentImage, currentColour); return false;">Orange</a>
             </div>
 
-            <h2><a name="about">About</a></h2>
+            <h2 class="clear-header" id="about">About</h2>
             <p><a href="http://www.mcqn.com">MCQN Ltd</a> and <a href="http://www.fact.co.uk">FACT</a> have collaborated with a collection of artists to bring you an interactive gallery of festive pixel art.  The project uses the huge LED facade on the side of FACT's building as the canvas to display the art and by connecting it to the Internet it allows people anywhere in the world to choose which piece is on display.</p>
 
 <p>By sending a message on Twitter that mentions the "#Cheerlights" hashtag and a colour, you can set one of the colours in the image.  If you also include the name of one of the artworks it will change the display to show that piece.</p>
 
-<h2>Directions:</h2>
+<h2 class="clear-header">Directions:</h2>
 
 <ol>
 <li class="text-left">Tweet to #Cheerlights.</li>
@@ -198,8 +200,7 @@
 <li class="text-left">To change the picture include one of the following artwork names: bauble, bell, frankensanta, jumper, nose, peacefulsanta, prints, pudding, sillysnowman, sleepysanta, tree, xmasfc, yaksmas</li>
 </ol>
 
-
-<h2>Artists:</h2>
+<h2 class="clear-header" id="artists">Artists</h2>
 
 <address>
   <strong>Zarino Zappia</strong><br>
