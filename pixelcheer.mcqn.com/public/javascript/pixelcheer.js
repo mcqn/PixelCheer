@@ -41,7 +41,7 @@ console.log("colour "+colour);
     this.context.fillStyle = CheerlightColours[this.colour];
     this.context.fillRect(this.topLeft, this.topRight, this.width, this.height);
     // And draw in the image
-    this.context.drawImage(image, 0, 0);
+    this.context.drawImage(image, 0, 0, image.width, image.height, 0, 0, this.width, this.height);
 }
 
 // Needed so we can import it into Node.js
