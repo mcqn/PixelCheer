@@ -89,14 +89,14 @@ module.exports = function(RED) {
                 node.facade.update(node.currentImage, node.currentColour);
                 node.updateBuffer();
             }
-        }
+        });
         redis_client.get("cheerlights", function(err, result) {
             if (!err) {
                 node.currentColour = result;
                 node.facade.update(node.currentImage, node.currentColour);
                 node.updateBuffer();
             }
-        }
+        });
 
         // Refresh the display at a set rate
         node._interval = setInterval( function() {
