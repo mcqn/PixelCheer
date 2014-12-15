@@ -77,7 +77,7 @@ module.exports = function(RED) {
             // Just send the data out, it will already be filled with the
             // image data from the canvas
             node.socket.send(node.facade_buffer, 0, node.facade_buffer.length, node.port, node.server);
-        }, 4500);
+        }, 450);
 
         node.on("close", function() {
             clearInterval(node._interval);
