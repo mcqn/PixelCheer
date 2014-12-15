@@ -123,14 +123,11 @@
           console.log("error"+e);
 	});
 
-        //socket.connect();
         // Last step, get the facade to update in a bit
         // Workaround where the image doesn't always show because
         // it hasn't loaded (and hooking into the onload for images
         // didn't have any effect)
         window.setTimeout('facade.update(currentImage, currentColour)', 250);
-      }, false);
-
       }, false);
     </script>
   </head>
