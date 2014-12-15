@@ -18,6 +18,8 @@ module.exports = function(RED) {
     "use strict";
     var dgram = require('dgram');
     var fs = require('fs');
+    var redis = require('redis');
+    var redis_client = redis.createClient();
     var pc =  require('./pixelcheer');
     var Canvas =  require('canvas');
     var Image = Canvas.Image;
@@ -80,6 +82,21 @@ module.exports = function(RED) {
         // than a load of garbage memory colours :-)
         node.facade.update(node.currentImage, node.currentColour);
         node.updateBuffer();
+        // And work out what we /should/ be displaying
+        redis_client.get("pixelcheer", function(err, result) {
+            if (!err) {
+                node.currentImage = node.images[result];
+                node.facade.update(node.currentImage, node.currentColour);
+                node.updateBuffer();
+            }
+        }
+        redis_client.get("cheerlights", function(err, result) {
+            if (!err) {
+                node.currentColour = result;
+                node.facade.update(node.currentImage, node.currentColour);
+                node.updateBuffer();
+            }
+        }
 
         // Refresh the display at a set rate
         node._interval = setInterval( function() {
