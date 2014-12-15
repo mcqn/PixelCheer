@@ -24,14 +24,14 @@ module.exports = function(RED) {
     var image_names = [
         "bauble",
         "bell",
-        "franken_santa",
+        "frankensanta",
         "jumper",
         "nose",
-        "peaceful_santa",
+        "peacefulsanta",
         "prints",
         "pudding",
-        "silly_snowman",
-        "sleepy_santa",
+        "sillysnowman",
+        "sleepysanta",
         "tree",
         "xmasfc",
         "yaksmas"
