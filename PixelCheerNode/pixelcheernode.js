@@ -58,6 +58,7 @@ module.exports = function(RED) {
         this.facade = new pc.Facade(this.canvas);
         this.socket = dgram.createSocket("udp4");
         this.currentImage = this.images["bauble"];
+        this.currentColour = "red";
         var node = this;
 
         node.updateBuffer = function() {
@@ -74,6 +75,11 @@ module.exports = function(RED) {
                 // else just skip the A component
             }
         }
+
+        // Update the display so it starts with something nicer
+        // than a load of garbage memory colours :-)
+        node.facade.update(node.currentImage, node.currentColour);
+        node.updateBuffer();
 
         // Refresh the display at a set rate
         node._interval = setInterval( function() {
