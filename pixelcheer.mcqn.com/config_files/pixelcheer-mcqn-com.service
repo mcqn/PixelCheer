@@ -1,0 +1,20 @@
+[Unit]
+Description=Dockerized PixelCheer Website
+Requires=docker.service
+After=docker.service
+ 
+[Service]
+TimeoutStartSec=0
+TimeoutStopSec=30
+Restart=always
+RestartSec=10
+ 
+WorkingDirectory=/LOCATION_OF_GIT_REPO_CHECKOUT/PixelCheer/pixelcheer.mcqn.com/
+ 
+ExecStart=/usr/local/bin/docker-compose -f docker-compose.yml up
+ExecStop=/usr/local/bin/docker-compose -f docker-compose.yml stop
+ 
+NotifyAccess=all
+ 
+[Install]
+WantedBy=multi-user.target
