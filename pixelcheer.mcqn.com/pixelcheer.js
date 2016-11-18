@@ -8,7 +8,7 @@
 */
 
 const redis = require('redis');
-const redis_client = redis.createClient();
+const redis_client = redis.createClient(6379, "db");
 
 const redis_publish_key = "__keyevent@0__:set";
 const redis_cheerlights_key = "cheerlights";
@@ -43,7 +43,9 @@ if (!module.parent) {
 
   socket.sockets.on('connection', function(io_client) {
     console.log("socket.io connection");
-    const subscribe = redis.createClient();
+    const subscribe = redis.createClient(6379, "db");
+    // Set Redis to publish key events
+    subscribe.config("set", "notify-keyspace-events", "KEA");
     subscribe.subscribe(redis_publish_key); // listen to messages from channel 'gol'
 
     subscribe.on("message", function(channel, message) {

@@ -1,0 +1,10 @@
+db:
+  image: redis
+  ports:
+    - "localhost:6379:6379"
+web:
+  build: .
+  ports:
+    - "8080:8080"
+  links:
+    - db

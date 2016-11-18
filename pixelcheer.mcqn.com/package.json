@@ -4,6 +4,7 @@
   "description": "",
   "main": "pixelcheer.js",
   "scripts": {
+    "start": "node pixelcheer.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "MCQN Ltd",
