@@ -1,0 +1,54 @@
+---
+- name: PixelCheer on a Raspberry Pi
+  hosts: pixelcheerpi
+  vars:
+    pi_name: pixelcheer
+  remote_user: pi
+  become: yes
+  become_method: sudo
+  roles:
+    - base-nodered
+    - ssh-tunnel
+
+  pre_tasks:
+    - name: Update apt
+      apt: upgrade=dist update_cache=yes
+      become: true
+
+  tasks:
+  - name: Change Pis name
+    hostname: name="{{ pi_name }}"
+  - name: Update hosts file too
+    replace: dest=/etc/hosts regexp='raspberrypi' replace="{{ pi_name }}"
+  - name: Install git
+    apt: name=git state=present
+  - name: Clone the PixelCheer repo
+    git: repo=git://github.com/mcqn/PixelCheer.git dest=/home/pi/PixelCheer
+  - name: Install redis node module
+    npm: name=node-red-node-redis global=yes
+    notify:
+      - restart nodered
+  - name: Install libcairo2-dev (canvas dependency)
+    apt: name=libcairo2-dev state=present
+  - name: Install libjpeg8-dev (canvas dependency)
+    apt: name=libjpeg8-dev state=present
+  - name: Install libpango1.0-dev (canvas dependency)
+    apt: name=libpango1.0-dev state=present
+  - name: Install libgif-dev (canvas dependency)
+    apt: name=libgif-dev state=present
+  - name: Install build-essential (canvas dependency)
+    apt: name=build-essential state=present
+  - name: Install g++ (canvas dependency)
+    apt: name=g++ state=present
+  - name: Install canvas node module
+    npm: name=canvas global=yes
+    notify:
+      - restart nodered
+  - name: Install PixelCheer Node RED node
+    synchronize: src=PixelCheerNode dest=/usr/lib/node_modules/
+    notify:
+      - restart nodered
+  - name: Copy Node RED flow across
+    synchronize: src=flows_pixelcheer.json dest=/home/pi/.node-red/
+    notify:
+      - restart nodered
