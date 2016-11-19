@@ -134,6 +134,14 @@ body {
   padding: 1em;
 }
 
+.text h2 {
+  padding-top: 2em;
+}
+
+.text p {
+  text-align: left;
+}
+
 
 /*
  * Footer
