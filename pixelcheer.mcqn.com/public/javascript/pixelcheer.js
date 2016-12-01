@@ -40,6 +40,11 @@ console.log("colour "+colour);
     this.colour = colour;
     this.context.fillStyle = CheerlightColours[this.colour];
     this.context.fillRect(this.topLeft, this.topRight, this.width, this.height);
+    // Turn off image smoothing so we get sharp pixel edges
+    this.context.mozImageSmoothingEnabled = false;
+    this.context.webkitImageSmoothingEnabled = false;
+    this.context.msImageSmoothingEnabled = false;
+    this.context.imageSmoothingEnabled = false;
     // And draw in the image
     this.context.drawImage(image, 0, 0, image.width, image.height, 0, 0, this.width, this.height);
 }
